@@ -20,8 +20,9 @@ module.exports = function (app, db) {
     })
 
     .post(function (req, res, next) {
+      if (req.body.title === undefined || req.body.title.replace(/\s/g, "") == "") return next(new Error('Please provide title'));
       var title = req.body.title;
-      console.log(title);
+      // console.log(title);
       db.collection(process.env.DB_COL)
         .insertOne({ title: req.body.title, comments: [], commentcount: 0 }, (err, doc) => {
           if (err) return next(err);
